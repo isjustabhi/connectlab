@@ -650,7 +650,10 @@ function CountUp({ value, digits = 0, suffix = "" }) {
   }, [value]);
 
   return (
-    <span className="font-mono">
+    <span
+      className="font-mono text-cyan-50"
+      style={{ textShadow: "0 0 8px rgba(34, 211, 238, 0.45), 0 0 18px rgba(20, 184, 166, 0.2)" }}
+    >
       {digits ? displayValue.toFixed(digits) : Math.round(displayValue)}
       {suffix}
     </span>
@@ -664,7 +667,10 @@ function SectionHeading({ title, subtitle }) {
         <span className="text-teal-400">●</span>
         <span>{title}</span>
       </div>
-      <div className="h-px w-52 animate-[expandLine_0.6s_ease-out] bg-gradient-to-r from-teal-400/80 to-transparent" />
+      <div
+        className="h-px w-52 animate-[expandLine_0.6s_ease-out] bg-gradient-to-r from-cyan-300 via-teal-400 to-transparent"
+        style={{ boxShadow: "0 0 10px rgba(34, 211, 238, 0.7), 0 0 22px rgba(20, 184, 166, 0.35)" }}
+      />
       {subtitle ? <p className="mt-3 max-w-3xl text-sm text-slate-400">{subtitle}</p> : null}
     </div>
   );
@@ -672,7 +678,9 @@ function SectionHeading({ title, subtitle }) {
 
 function Card({ className = "", children }) {
   return (
-    <div className={`rounded-[24px] border border-white/10 bg-white/5 p-5 backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:border-white/15 hover:shadow-[0_14px_40px_rgba(15,23,42,0.25)] ${className}`}>
+    <div
+      className={`relative rounded-[24px] border border-white/20 bg-white/5 p-5 backdrop-blur-2xl transition duration-300 hover:-translate-y-0.5 hover:border-cyan-200/30 hover:shadow-[0_18px_60px_rgba(15,23,42,0.35)] before:pointer-events-none before:absolute before:inset-0 before:rounded-[24px] before:p-px before:[background:linear-gradient(120deg,rgba(34,211,238,0.6),rgba(20,184,166,0.15),rgba(59,130,246,0.55),rgba(34,211,238,0.6))] before:[mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[mask-composite:xor] before:animate-[neonBorderPulse_6s_ease-in-out_infinite] after:pointer-events-none after:absolute after:inset-[1px] after:rounded-[23px] after:shadow-[inset_0_0_30px_rgba(34,211,238,0.05),0_0_40px_rgba(20,184,166,0.08)] ${className}`}
+    >
       {children}
     </div>
   );
@@ -683,10 +691,33 @@ function ParticleField({ particles }) {
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
       <div className="absolute inset-0 animate-[gridPulse_7s_ease-in-out_infinite] bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:72px_72px]" />
       <div className="absolute left-1/2 top-1/3 h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(20,184,166,0.1),transparent_60%)] blur-3xl animate-[orbGlow_4s_ease-in-out_infinite]" />
+      <svg className="absolute inset-0 h-full w-full opacity-35" preserveAspectRatio="none" viewBox="0 0 100 100">
+        {particles.map((particle, index) =>
+          particles.slice(index + 1).map((other) => {
+            const x1 = Number.parseFloat(particle.left);
+            const y1 = Number.parseFloat(particle.top);
+            const x2 = Number.parseFloat(other.left);
+            const y2 = Number.parseFloat(other.top);
+            const distance = Math.hypot(x2 - x1, y2 - y1);
+            if (distance > 18) return null;
+            return (
+              <line
+                key={`${particle.id}-${other.id}`}
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke="rgba(34, 211, 238, 0.18)"
+                strokeWidth="0.08"
+              />
+            );
+          }),
+        )}
+      </svg>
       {particles.map((particle) => (
         <span
           key={particle.id}
-          className="absolute rounded-full bg-teal-400/30"
+          className="absolute rounded-full bg-teal-300/60 shadow-[0_0_10px_rgba(34,211,238,0.7),0_0_22px_rgba(20,184,166,0.35)]"
           style={{
             left: particle.left,
             top: particle.top,
@@ -708,7 +739,16 @@ function PipelineNavigator({ currentView, completedStages, onJump, isProcessing,
       <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="mb-2 flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-400 to-blue-500 text-lg font-bold text-white shadow-[0_0_30px_rgba(20,184,166,0.35)]">
+            <div
+              className="flex h-11 w-11 items-center justify-center rounded-2xl text-lg font-bold text-white shadow-[0_0_30px_rgba(20,184,166,0.35)]"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(34,211,238,0.95), rgba(59,130,246,0.95), rgba(168,85,247,0.92), rgba(244,114,182,0.9), rgba(34,211,238,0.95))",
+                backgroundSize: "300% 300%",
+                animation: "hologramShift 7s linear infinite",
+                boxShadow: "0 0 18px rgba(34,211,238,0.4), 0 0 36px rgba(59,130,246,0.25)",
+              }}
+            >
               CL
             </div>
             <div>
@@ -750,6 +790,7 @@ function PipelineNavigator({ currentView, completedStages, onJump, isProcessing,
                     : "border-white/10 bg-white/[0.03]"
               } ${clickable ? "cursor-pointer" : "cursor-not-allowed opacity-70"}`}
             >
+              <span className={`pointer-events-none absolute inset-0 rounded-2xl ${current ? "animate-[ringPulse_2.8s_ease-out_infinite]" : completed ? "animate-[ringPulse_4s_ease-out_infinite]" : ""}`} />
               <div className="mb-2 flex items-center justify-between">
                 <span className="text-xs uppercase tracking-[0.22em] text-slate-400">{STAGE_LABELS[stage]}</span>
                 {completed ? (
@@ -1145,9 +1186,44 @@ export default function App() {
           0%, 49% { opacity: 1; }
           50%, 100% { opacity: 0; }
         }
+        @keyframes neonBorderPulse {
+          0%, 100% { opacity: 0.7; filter: brightness(1); }
+          50% { opacity: 1; filter: brightness(1.25); }
+        }
+        @keyframes hologramShift {
+          0% { background-position: 0% 50%; filter: hue-rotate(0deg); }
+          50% { background-position: 100% 50%; filter: hue-rotate(35deg); }
+          100% { background-position: 0% 50%; filter: hue-rotate(0deg); }
+        }
+        @keyframes scanSweep {
+          0% { transform: translateY(-20%); opacity: 0; }
+          15% { opacity: 0.3; }
+          85% { opacity: 0.16; }
+          100% { transform: translateY(120vh); opacity: 0; }
+        }
+        @keyframes crtFlicker {
+          0%, 100% { opacity: 0.03; }
+          10% { opacity: 0.02; }
+          11% { opacity: 0.045; }
+          30% { opacity: 0.028; }
+          31% { opacity: 0.04; }
+          60% { opacity: 0.022; }
+          61% { opacity: 0.035; }
+        }
+        @keyframes rotateDash {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes ringPulse {
+          0% { box-shadow: 0 0 0 0 rgba(34,211,238,0.28); }
+          70% { box-shadow: 0 0 0 14px rgba(34,211,238,0); }
+          100% { box-shadow: 0 0 0 0 rgba(34,211,238,0); }
+        }
       `}</style>
 
       <ParticleField particles={particles} />
+      <div className="pointer-events-none fixed inset-0 z-[1] opacity-[0.045] mix-blend-screen animate-[crtFlicker_0.22s_steps(2,end)_infinite] bg-[linear-gradient(to_bottom,rgba(255,255,255,0.4)_0px,rgba(255,255,255,0)_1px)] bg-[size:100%_4px]" />
+      <div className="pointer-events-none fixed inset-x-0 top-0 z-[2] h-24 bg-gradient-to-b from-cyan-300/10 via-cyan-200/5 to-transparent animate-[scanSweep_10s_linear_infinite]" />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
         <PipelineNavigator
@@ -1168,7 +1244,16 @@ export default function App() {
           <div className="grid gap-6 lg:grid-cols-[1.3fr_0.9fr]">
             <Card className="relative overflow-hidden px-6 py-8 sm:px-10">
               <div className="relative z-10 text-center lg:text-left">
-                <div className="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-[28px] bg-gradient-to-br from-teal-400 to-blue-500 text-4xl font-bold text-white shadow-[0_0_40px_rgba(20,184,166,0.35)] animate-[scaleGlow_0.8s_ease-out] lg:mx-0">
+                <div
+                  className="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-[28px] text-4xl font-bold text-white shadow-[0_0_40px_rgba(20,184,166,0.35)] animate-[scaleGlow_0.8s_ease-out] lg:mx-0"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, rgba(34,211,238,0.98), rgba(59,130,246,0.98), rgba(168,85,247,0.95), rgba(244,114,182,0.92), rgba(34,211,238,0.98))",
+                    backgroundSize: "320% 320%",
+                    animation: "scaleGlow 0.8s ease-out, hologramShift 8s linear infinite",
+                    boxShadow: "0 0 22px rgba(34,211,238,0.5), 0 0 60px rgba(59,130,246,0.24)",
+                  }}
+                >
                   CL
                 </div>
                 <h2 className="animate-[fadeSlideUp_0.7s_ease-out] text-4xl font-bold tracking-tight text-slate-50 sm:text-5xl">
@@ -1210,12 +1295,16 @@ export default function App() {
                   setDragActive(true);
                 }}
                 onDrop={onDrop}
-                className={`relative z-10 mt-10 rounded-[28px] border-2 border-dashed p-8 text-center transition duration-300 animate-[fadeSlideUp_1.35s_ease-out] ${
+                className={`relative z-10 mt-10 overflow-hidden rounded-[28px] border-2 border-dashed p-8 text-center transition duration-300 animate-[fadeSlideUp_1.35s_ease-out] ${
                   dragActive
                     ? "border-teal-400 bg-teal-400/10 shadow-[0_0_40px_rgba(20,184,166,0.2)]"
                     : "border-teal-400/30 bg-slate-950/40"
                 }`}
               >
+                <div
+                  className="pointer-events-none absolute inset-[-2px] rounded-[30px] border-2 border-dashed border-cyan-300/40"
+                  style={{ animation: "rotateDash 22s linear infinite" }}
+                />
                 <div className="mx-auto mb-4 flex h-16 w-16 animate-[float_3s_ease-in-out_infinite] items-center justify-center rounded-2xl bg-gradient-to-br from-teal-400/20 to-blue-400/20 text-3xl text-teal-200">
                   ⤴
                 </div>
@@ -1225,14 +1314,14 @@ export default function App() {
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="rounded-full border border-white/10 bg-white/10 px-5 py-3 text-sm font-medium text-slate-100 transition hover:-translate-y-0.5 hover:border-white/20"
+                    className="relative rounded-full border border-white/10 bg-white/10 px-5 py-3 text-sm font-medium text-slate-100 transition hover:-translate-y-0.5 hover:border-white/20 before:pointer-events-none before:absolute before:inset-[-1px] before:-z-10 before:rounded-full before:bg-[conic-gradient(from_0deg,rgba(34,211,238,0.8),rgba(59,130,246,0.8),rgba(20,184,166,0.8),rgba(34,211,238,0.8))] before:animate-[rotateDash_6s_linear_infinite] before:p-px before:[mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[mask-composite:xor]"
                   >
                     Browse Files
                   </button>
                   <button
                     type="button"
                     onClick={() => handleParsedData(SAMPLE_DATA, "connectlab-sample-dataset.csv")}
-                    className="rounded-full border border-teal-400/30 bg-teal-400/10 px-5 py-3 text-sm font-medium text-teal-100 transition hover:-translate-y-0.5 hover:border-teal-300/50 hover:shadow-[0_0_24px_rgba(20,184,166,0.15)]"
+                    className="relative rounded-full border border-teal-400/30 bg-teal-400/10 px-5 py-3 text-sm font-medium text-teal-100 transition hover:-translate-y-0.5 hover:border-teal-300/50 hover:shadow-[0_0_24px_rgba(20,184,166,0.15)] before:pointer-events-none before:absolute before:inset-[-1px] before:-z-10 before:rounded-full before:bg-[conic-gradient(from_0deg,rgba(34,211,238,0.8),rgba(59,130,246,0.8),rgba(20,184,166,0.85),rgba(34,211,238,0.8))] before:animate-[rotateDash_5s_linear_infinite] before:p-px before:[mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[mask-composite:xor]"
                   >
                     Load Sample Dataset
                   </button>
@@ -1441,7 +1530,7 @@ export default function App() {
                         <p className="text-sm text-slate-200">{column}</p>
                         <span className="text-xs text-slate-500">6 bins</span>
                       </div>
-                      <div className="h-28 animate-[fadeSlideUp_0.3s_ease-out]">
+                      <div className="h-28 animate-[fadeSlideUp_0.3s_ease-out]" style={{ filter: "drop-shadow(0 0 14px rgba(34,211,238,0.2)) drop-shadow(0 0 28px rgba(20,184,166,0.12))" }}>
                         <ResponsiveContainer width="100%" height="100%">
                           <AreaChart data={profileReport.distributions[column]}>
                             <defs>
@@ -1509,7 +1598,7 @@ export default function App() {
                 type="button"
                 onClick={runAnalysis}
                 disabled={isProcessing}
-                className="rounded-full bg-gradient-to-r from-teal-400 via-cyan-300 to-teal-400 bg-[length:200%_100%] px-6 py-3 text-sm font-semibold text-slate-950 animate-[shimmerBtn_3s_linear_infinite] shadow-[0_12px_36px_rgba(20,184,166,0.25)] transition hover:-translate-y-0.5 hover:brightness-110"
+                className="relative rounded-full bg-gradient-to-r from-teal-400 via-cyan-300 to-teal-400 bg-[length:200%_100%] before:pointer-events-none before:absolute before:inset-[-1px] before:-z-10 before:rounded-full before:bg-[conic-gradient(from_0deg,rgba(34,211,238,0.85),rgba(59,130,246,0.8),rgba(20,184,166,0.85),rgba(34,211,238,0.85))] before:animate-[rotateDash_5s_linear_infinite] before:p-px before:[mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[mask-composite:xor] px-6 py-3 text-sm font-semibold text-slate-950 animate-[shimmerBtn_3s_linear_infinite] shadow-[0_12px_36px_rgba(20,184,166,0.25)] transition hover:-translate-y-0.5 hover:brightness-110"
               >
                 Run AI Analysis →
               </button>
@@ -1606,7 +1695,7 @@ export default function App() {
                           <h3 className="text-base font-semibold text-slate-100">{plot.title}</h3>
                           <p className="text-sm text-slate-400">{plot.description}</p>
                         </div>
-                        <div className="h-64 animate-[fadeSlideUp_0.3s_ease-out]">
+                        <div className="h-64 animate-[fadeSlideUp_0.3s_ease-out]" style={{ filter: "drop-shadow(0 0 16px rgba(34,211,238,0.22)) drop-shadow(0 0 30px rgba(20,184,166,0.14))" }}>
                           <ResponsiveContainer width="100%" height="100%">
                             <ScatterChart margin={{ top: 8, right: 12, bottom: 8, left: 0 }}>
                               <CartesianGrid stroke="#1E2040" />
@@ -1634,7 +1723,7 @@ export default function App() {
                           </div>
                           <span className="rounded-full bg-blue-400/15 px-3 py-1 text-xs text-blue-200">Effect chart</span>
                         </div>
-                        <div className="h-60 animate-[fadeSlideUp_0.3s_ease-out]">
+                        <div className="h-60 animate-[fadeSlideUp_0.3s_ease-out]" style={{ filter: "drop-shadow(0 0 16px rgba(34,211,238,0.22)) drop-shadow(0 0 30px rgba(20,184,166,0.14))" }}>
                           <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={chart.data}>
                               <CartesianGrid stroke="#1E2040" vertical={false} />
@@ -1670,7 +1759,7 @@ export default function App() {
                 type="button"
                 onClick={runInsights}
                 disabled={isProcessing}
-                className="rounded-full bg-gradient-to-r from-teal-400 via-cyan-300 to-teal-400 bg-[length:200%_100%] px-6 py-3 text-sm font-semibold text-slate-950 animate-[shimmerBtn_3s_linear_infinite] shadow-[0_12px_36px_rgba(20,184,166,0.25)] transition hover:-translate-y-0.5 hover:brightness-110"
+                className="relative rounded-full bg-gradient-to-r from-teal-400 via-cyan-300 to-teal-400 bg-[length:200%_100%] before:pointer-events-none before:absolute before:inset-[-1px] before:-z-10 before:rounded-full before:bg-[conic-gradient(from_0deg,rgba(34,211,238,0.85),rgba(59,130,246,0.8),rgba(20,184,166,0.85),rgba(34,211,238,0.85))] before:animate-[rotateDash_5s_linear_infinite] before:p-px before:[mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[mask-composite:xor] px-6 py-3 text-sm font-semibold text-slate-950 animate-[shimmerBtn_3s_linear_infinite] shadow-[0_12px_36px_rgba(20,184,166,0.25)] transition hover:-translate-y-0.5 hover:brightness-110"
               >
                 Generate Insights →
               </button>
@@ -1777,7 +1866,7 @@ export default function App() {
               <button
                 type="button"
                 onClick={prepareExport}
-                className="rounded-full bg-gradient-to-r from-teal-400 via-cyan-300 to-teal-400 bg-[length:200%_100%] px-6 py-3 text-sm font-semibold text-slate-950 animate-[shimmerBtn_3s_linear_infinite] shadow-[0_12px_36px_rgba(20,184,166,0.25)] transition hover:-translate-y-0.5 hover:brightness-110"
+                className="relative rounded-full bg-gradient-to-r from-teal-400 via-cyan-300 to-teal-400 bg-[length:200%_100%] before:pointer-events-none before:absolute before:inset-[-1px] before:-z-10 before:rounded-full before:bg-[conic-gradient(from_0deg,rgba(34,211,238,0.85),rgba(59,130,246,0.8),rgba(20,184,166,0.85),rgba(34,211,238,0.85))] before:animate-[rotateDash_5s_linear_infinite] before:p-px before:[mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[mask-composite:xor] px-6 py-3 text-sm font-semibold text-slate-950 animate-[shimmerBtn_3s_linear_infinite] shadow-[0_12px_36px_rgba(20,184,166,0.25)] transition hover:-translate-y-0.5 hover:brightness-110"
               >
                 Prepare Export →
               </button>
